@@ -1,1 +1,274 @@
-
+import pandas as pd
+import numpy as np
+from matplotlib import pyplot as plt
+ds={'S.No':pd.Series([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]),
+    'State':pd.Series(['Uttar Pradesh','Punjab','Haryana','Maharastra','Kerala','Tamilnadu','Gujarat','Karnataka','Andhra Pradesh','Arunachal Pradesh','Assam','Bihar','Chattisgarh','Himachal Pradesh','Jammu& Kashmir','Jharkhand','Manipur','Meghalaya','Mizoram','Nagaland']),
+    'Population':pd.Series([199812341,27743338,25545198,112372333,33406061,72147030,60439692,61095297,84580777,1458545,31205576,104099452,25351462,6864602,13635010,32988134,2855794,2966889,1097206,1978502]),
+    'Growth of Crops':pd.Series(['Rice','Maize','Sugarcane','Bajra','Coconut','Banana','Jowar','Ragi','Rice','Maize','Maize','Rice','Maize','Vegetables','Apples','Ragi','Cotton','Maize','Maize','Millet']),
+    'Soil Type':pd.Series(['Sandy loan','Claly soil','Alluvial Soil','Residual','Red soil','Red Loam','Black Soil','Red Soil','Red Lateritic','Inceptisols','Hill Soil','Piedmontswamp','Clary Soil','Brown Hill Soil','Alluvial Soil','Red Soil','Inceptisols','Loamy Soil','Sand-Loamy Soil','Ultisols Soil']),
+    'ph Level':pd.Series([6.54,6.83,7.45,8.01,8.10,7.30,6.25,7.72,7.80,6.47,6.81,7.07,7.65,7.66,6.86,8.40,8.10,7.65,6.59,8.13]),
+    'Temperature':pd.Series([20.87,21.77,23.00,26.49,20.13,23.05,22.70,20.27,24.51,23.22,26.52,23.97,26.80,24.01,25.66,24.28,21.58,23.79,21.86,23.57]),
+    'Humidity':pd.Series([82.00,80.31,82.32,80.15,81.60,83.37,82.63,82.89,83.53,83.03,81.41,81.45,80.88,82.05,80.66,80.30,82.78,80.41,80.19,83.58]),
+    'Season':pd.Series(['Kharif','Zaid','Rabi','Kharif','Zaid','Zaid','Rabi','Kharif','Kharif','Zaid','Rabi','Kharif','Zaid','Rabi','Zaid','Kharif','Zaid','Rabi','Rabi','Zaid']),
+    'Area':pd.Series([1312.7,1654.8,1119.5,1055.2,9895.6,1689.1,8665.8,4985,7989.4,1055.4,1629.8,1449.9,1222.2,1349.1,1439,1636.5,1334,1629.5,9560.7,1308.8]),
+    'Production':pd.Series([2061,2083,1525,5239,5267,5182,1278,1763,10882,11558,13.5,15.86,102.5,104.37,192,208,208.5,3324,26.14,6443]),
+    'Crop Health(%)':pd.Series([87,87,76,68,86,67,78,78,89,88,90,68,79,86,82,58,76,65,88,79]),
+    'Water Quality(%)':pd.Series([50,60,87,76,67,88,47,97,86,56,77,88,56,76,77,57,87,69,58,68]),
+    'Type of Agriculture Used':pd.Series(['Organic Farming', 'Aquaponics', 'Vertical Farming', 'Hydroponics', 'Permaculture', 'Precision Agriculture', 'Agroforestry','Greenhouse Cultivation', 'Urban Farming', 'Intensive Farming', 'Sustainable Agriculture', 'Crop Rotation', 'No-Till Farming', 'Regenerative Agriculture','Biodynamic Farming', 'Dry Farming', 'Alley Cropping', 'Silvopasture', 'Cover Cropping', 'Raised Bed Gardening']),
+    'Water pollution(%)':pd.Series(['3.5%', '1.8%', '2.7%', '4.2%', '0.9%', '5.1%', '2.3%', '3.8%', '1.5%', '4.8%', '0.7%', '2.1%', '3.2%', '1.2%', '4.4%', '0.5%', '5.3%', '2.9%', '4.6%', '1.1%']),
+    'Soil pollution(%)':pd.Series(['3.25%', '8.71%', '12.46%', '5.89%', '19.72%', '1.34%', '7.56%', '14.92%', '9.83%', '4.67%', '11.28%', '6.73%', '2.57%', '15.61%', '18.09%','10.17%', '13.75%', '0.92%', '16.39%', '20.45%']),
+    'Goverment subsidies':pd.Series(["Rashtriya Krishi Vikas Yojana","National Food Security Mission","Sub-Mission on Agricultural Mechanization","NABARD loans in India","Yantra Laxmi Scheme","Rashtriya Krishi Vikas Yojana","National Food Security Mission","Sub-Mission on Agricultural Mechanization","NABARD loans in India""Yantra Laxmi Scheme","Rashtriya Krishi Vikas Yojana","National Food Security Mission","Sub-Mission on Agricultural Mechanization","NABARD loans in India""Yantra Laxmi Scheme","Rashtriya Krishi Vikas Yojana","National Food Security Mission","Sub-Mission on Agricultural Mechanization","NABARD loans in India","Yantra Laxmi Scheme","Rashtriya Krishi Vikas Yojana","National Food Security Mission"]),
+    'Organic Fertilizers Used (%)': pd.Series(['5%', '10%', '15%', '20%', '25%', '30%', '35%', '40%', '28.2%', '37.6%', '15.7%', '44.8%', '9.3%', '19.6%', '32.1%', '26.8%', '51.2%', '8.7%','45%', '50%']),
+    'Power Consumption (%)': pd.Series(['12.5%',  '35.9%', '14.6%', '42.3%', '10.9%', '20.3%', '30.7%', '45.9%', '7.8%', '17.1%', '41.5%', '22.9%', '47.4%', '11.6%', '36.3%', '16.2%', '38.7%', '13.1%','25.6%','22.3%']),
+    'Type of Technology Used': pd.Series(['Precision Agriculture', 'IoT Agriculture', 'Smart Farming', 'Drones in Agriculture', 'Agricultural Robots', 'Machine Learning','Artificial Intelligence', 'Blockchain in Agriculture', 'Data Analytics','Dry Farming', 'Rainfed Agriculture', 'Conservation Agriculture', 'No-Till Farming', 'Strip Cropping','Cover Cropping', 'Terrace Farming', 'Rice Intensification System', 'Permaculture', 'Precision Livestock Farming', 'Smart Livestock Management'])
+ }
+df=pd.DataFrame(ds)
+print(df)
+sc=df.copy(deep=False)
+print("***** SHALLOW COPY OF DATA SET *****")
+print(sc)
+dc=df.copy(deep=True)
+print("***** DEEP COPY  OF DATA SET *****")
+print(dc)
+print("***** SIZE OF DATA SET *****")
+print(dc.size)
+print("*****  SHAPE OF DATA SET  *****")
+print(sc.shape)
+print("***** INDEX OF DATA SET *****")
+print(dc.index)
+print("***** DIMENSION OF DATA SET *****")
+print(sc.ndim)
+print("**** INFO OF DATA SET *****")
+print(df.info())
+print("***** MEMORY_USAGE OF DATA SET *****")
+print(dc.memory_usage())
+print("***** DESCRIBE ABOUT DATA SET *****")
+print(df.describe)
+print("****** Column selection ****")
+print(df['Type of Technology Used'])
+print("***** Column Addition ***** ")
+sc['Rank']=pd.Series([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20])
+print(df)
+print("***** Column Deletion ***** ")
+del sc['Rank']
+print(sc)
+print("****** Column Deletion using pop operation ****")
+sc.pop('Type of Technology Used')
+print(sc)
+print("***** COLUMN INDEXING *****")
+print(df.reindex(['S.No','State','Population','Soil Type','ph Level','Growth of Crops','Season','Temperature','Humidity','Production','Crop Health(%)','Water Quality(%)','Organic Fertilizers Used (%)','Power Consumption (%)','Soil pollution(%)','Water pollution(%)','Type of Agriculture Used','Goverment subsidies','Type of Technology Used'],axis='columns'))
+print("***** ROW SELECTION  *****")
+print(df.loc[8],df.loc[5])
+print("***** ROW ADDITION  *****")
+dc.loc[88]=[21,'Andhra Pradesh',199875544,'Rice','Sandy loam',6.54,20.87,82.00,'Kharif',1312.5,2062,85,60,'Organic Forming','3.6%','3.35%',"National Food Security Mission",'55%','26.2%','Iot Agriculture']
+print(dc)
+print("***** ROW DELETION *****")
+print(dc.drop(88))
+print("*** ROW INDEXING ***")
+c=sc.reindex([20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1])
+print(c)
+print("***** HEAD IN DEFAULT FUNCTION *****")
+print(df.head())
+print("***** HEAD (SPECIFIC VALUE) *****")
+print(df.head(15))
+print("***** TAILS IN DEFAULT FUNCTION *****")
+print(df.tail())
+print("***** TAILS (SPECIFIC VALUE) *****")
+print(df.tail(17))
+print("**  MIN & MAX VALUES ***")
+min=dc['Population'].min()
+max=df['Population'].max()
+print("VALUE OF MIN :: ",min)
+print("VALUE OF MAX  :: ",max)
+print("***Rank value for the data set***")
+print(df.rank())
+print("***** RANK FOR THE SPECIFIC ATTRIBUTE *****")
+print(df['Population'].rank())
+print("** APPLY CORRELATION FUNCTION ()  **")
+a=df['ph Level'].corr(df['Area'])
+print(a)
+b=df['Temperature'].corr(df['Humidity'])
+print(b)
+c=df['Area'].corr(df['Production'])
+print(c)
+d=df['Crop Health(%)'].corr(df['Water Quality(%)'])
+print(d)
+print("***** APPLY THE COVARIANCE FUNCTION *****")
+a=df['ph Level'].cov(df['Area'])
+print(a)
+b=df['Temperature'].cov(df['Humidity'])
+print(b)
+c=df['Area'].cov(df['Production'])
+print(c)
+d=df['Crop Health(%)'].cov(df['Water Quality(%)'])
+print(d)
+print("APPLYING SLICING OPERATION TO THE DATA SET")
+df1 = df.iloc[:,0:5:1]
+print(df1)
+#dataset-1
+a={'S.No':pd.Series([1,2,3,4,5,6,7,8,9,10]),
+    'State':pd.Series(['Uttar Pradesh','Punjab','Haryana','Maharastra','Kerala','Tamilnadu','Gujarat','Karnataka','Andhra Pradesh','Arunachal Pradesh']),
+    'Population':pd.Series([199812341,27743338,25545198,112372333,33406061,72147030,60439692,61095297,84580777,1458545]),
+    'Growth of Crops':pd.Series(['Rice','Maize','Sugarcane','Bajra','Coconut','Banana','Jowar','Ragi','Rice','Maize']),
+    'Soil Type':pd.Series(['Sandy loan','Claly soil','Alluvial Soil','Residual','Red soil','Red Loam','Black Soil','Red Soil','Red Lateritic','Inceptisols']),
+    'ph Level':pd.Series([6.54,6.83,7.45,8.01,8.10,7.30,6.25,7.72,7.80,6.47]),
+    'Temperature':pd.Series([20.87,21.77,23.00,26.49,20.13,23.05,22.70,20.27,24.51,23.22]),
+    'Humidity':pd.Series([82.00,80.31,82.32,80.15,81.60,83.37,82.63,82.89,83.53,83.03]),
+    'Season':pd.Series(['Kharif','Zaid','Rabi','Kharif','Zaid','Zaid','Rabi','Kharif','Kharif','Zaid']),
+    'Area':pd.Series([1312.7,1654.8,1119.5,1055.2,9895.6,1689.1,8665.8,4985,7989.4,1055.4]),
+    'Production':pd.Series([2061,2083,1525,5239,5267,5182,1278,1763,10882,11558]),
+    'Type of Agriculture Used':pd.Series(['Organic Farming', 'Aquaponics', 'Vertical Farming', 'Hydroponics', 'Permaculture', 'Precision Agriculture', 'Agroforestry','Greenhouse Cultivation', 'Urban Farming', 'Intensive Farming']),
+   }
+x=pd.DataFrame(a)
+print(x)
+#dataset-2
+c={'S.No':pd.Series([1,2,3,4,5,6,7,8,9,10]),
+    'Crop Health(%)':pd.Series([87,87,76,68,86,67,78,78,89,88]),
+    'Water Quality(%)':pd.Series([50,60,87,76,67,88,47,97,86,56]),
+    'Type of Agriculture Used':pd.Series(['Organic Farming', 'Aquaponics', 'Vertical Farming', 'Hydroponics', 'Permaculture', 'Precision Agriculture', 'Agroforestry','Greenhouse Cultivation', 'Urban Farming', 'Intensive Farming']),
+    'Water pollution(%)':pd.Series(['3.5%', '1.8%', '2.7%', '4.2%', '0.9%', '5.1%', '2.3%', '3.8%', '1.5%', '4.8%']),
+    'Soil pollution(%)':pd.Series(['3.25%', '8.71%', '12.46%', '5.89%', '19.72%', '1.34%', '7.56%', '14.92%', '9.83%', '4.67%']),
+    'Goverment subsidies':pd.Series(["Rashtriya Krishi Vikas Yojana","National Food Security Mission","Sub-Mission on Agricultural Mechanization","NABARD loans in India","Yantra Laxmi Scheme","Rashtriya Krishi Vikas Yojana","National Food Security Mission","Sub-Mission on Agricultural Mechanization","NABARD loans in India","Yantra Laxmi Scheme"]),
+    'Organic Fertilizers Used (%)': pd.Series(['5%', '10%', '15%', '20%', '25%', '30%', '35%', '40%', '28.2%', '37.6%']),
+    'Power Consumption (%)': pd.Series(['12.5%',  '35.9%', '14.6%', '42.3%', '10.9%', '20.3%', '30.7%', '45.9%', '7.8%', '17.1%']),
+    'Type of Technology Used': pd.Series(['Precision Agriculture', 'IoT Agriculture', 'Smart Farming', 'Drones in Agriculture', 'Agricultural Robots', 'Machine Learning','Artificial Intelligence', 'Blockchain in Agriculture', 'Data Analytics','Dry Farming'])
+ }
+y=pd.DataFrame(c)
+print(y)
+print("**** Merging  of dataset1 and dataset2 ****")
+print(pd.merge(x,y,on='Type of Agriculture Used'))
+print(" **** Data aggregation/ joining two data frames ****")
+print(pd.concat([x,y]))
+print("**** Data grouping  by using condition****")
+x=df.groupby('Soil Type')
+print(x.get_group('Sandy loan'))
+print("***** Using notnull() method ****")
+print(df.notnull())
+print("**** Empty cells/NaN values ****")
+print("**** Using isnull() method ****")
+print(df.isnull())
+print("**** wrong format ****")
+print(df['Population'].sum())
+print(" **** USING dropna() method **** ")
+print(df.dropna())
+print("**** Using fillna() method ****")
+print(df.fillna(method="pad"))
+print("**** using fillna(method='bfill' ****")
+print(df.fillna(method='bfill'))
+print(df.fillna(10))
+print("**** Duplicates ****")
+print(df.duplicated)
+print(" **** Droping the duplicate values **** ")
+df=(df.drop_duplicates)
+print(df)
+print("***** using drop_duplicated(inplace=True) ****")
+print(df.drop_duplicates(inplace=True))
+#classification:
+#it is a predictive model focus on values present in the dataset
+df['Population']=df['Temperature']+df['Humidity']
+print(df.head(20))
+print("**** data mungning/wrangling ****")
+print("**** data filtering By using the comdition ****")
+x=df['ph Level']>=7
+print(x)
+z=df[df['ph Level']<=7].copy()
+print(z)
+y=df[df['ph Level']>=7].copy()
+print(y)
+print("***** Line Graph For 2 Columns  by using plot() method ***** ")
+plt.plot(df['Temperature'],df['Humidity'])
+print("***** line graph for whole data set *****")
+x=df.plot.line()
+plt.show()# show () method
+print("***** labelling x-axis *****" )
+plt.plot(df['Temperature'],df['Humidity'])
+plt.xlabel('Humidity')
+plt.show()
+print("***** labelling y-axis *****")
+plt.plot(df['Temperature'],df['Humidity'])
+plt.ylabel('Temperature')
+plt.show()
+print("***** combine the both x-label and y=label***** ")
+plt.plot(df['Temperature'],df['Humidity'])
+plt.xlabel('Humidity')
+plt.ylabel('Temperature')
+plt.show()
+print( " ***** scattering of two columns *****")
+plt.scatter(df['Temperature'],df['Humidity'],marker='*',linestyle='-')
+plt.xlabel('Humidity')
+plt.ylabel('Temperature')
+plt.show()
+print( " ***** piechart for temperature ***** ")
+plt.pie(df['Temperature'])
+plt.show()
+print("**** Apply title() method *****")
+plt.plot(df['Temperature'],df['Humidity'])
+plt.xlabel('Humidity')
+plt.ylabel('Temperature')
+plt.title("Plot Graph B/W Temperature & Humidity")
+plt.show()
+print("**** using marker 'o'and linestyle':' **** ")
+plt.plot(df['Temperature'],df['Humidity'],marker='o',linestyle=':')
+plt.xlabel('Humidity')
+plt.ylabel('Temperature')
+plt.title("Plot Graph B/W Temperature & Humidity")
+plt.show()
+print("**** using marker '*'and linestyle'dotted' *****")
+plt.plot(df['Temperature'],df['Humidity'],marker='*',linestyle='dotted')
+plt.xlabel('Humidity')
+plt.ylabel('Temperature')
+plt.title("Plot Graph B/W Temperature & Humidity")
+plt.show()
+print(" ***** using marker 'o'and linestyle'dashed'***** ")
+plt.plot(df['Temperature'],df['Humidity'],marker='o',linestyle='dashed')
+plt.xlabel('Humidity')
+plt.ylabel('Temperature')
+plt.title("Plot Graph B/W Temperature & Humidity")
+plt.show()
+print(" ***** using marker '*'and linestyle'Solid'***** ")
+plt.plot(df['Temperature'],df['Humidity'],marker='*',linestyle='solid')
+plt.xlabel('Humidity')
+plt.ylabel('Temperature')
+plt.title("Plot Graph B/W Temperature & Humidity")
+plt.show()print(" ***** using marker 'o'and linestyle'dashdot'***** ")
+plt.plot(df['Temperature'],df['Humidity'],marker='o',linestyle='dashdot')
+plt.xlabel('Humidity')
+plt.ylabel('Temperature')
+plt.title("Plot Graph B/W Temperature & Humidity")
+plt.show()print("**** using marker 'o'and linestyle':' **** ")
+print( "                ")
+print(" ***** Using grid() Method *****")
+plt.plot(df['Temperature'],df['Humidity'],marker='o',linestyle=':')
+plt.xlabel('Humidity')
+plt.ylabel('Temperature')
+plt.title("Plot Graph B/W Temperature & Humidity")
+plt.grid()
+plt.show()
+print(" **** Line Graph **** ")
+x=df.plot.line()print(" **** Bar Graph **** ")
+x=df.plot.bar()print(" **** Area Graph **** ")
+x=df.plot.area()print(" **** Histogram Graph **** ")
+x=df.plot.hist()print(" **** Box Graph **** ")
+x=df.plot.box()print(" **** Kde Graph ****")
+x=df.plot.kde()
+print(" **   Normal Distribution   ** ")
+x=np.random.normal(1,2,10)
+print(x)
+x=np.random.normal(1,2,10)
+print(x)
+plt.hist(x,100)
+plt.show()
+print( " **   Uniform Distribution   ** ")
+x=np.random.uniform(1,2,10)
+print(x)
+x=np.random.uniform(1,2,10)
+print(x)
+plt.hist(x,100)
+plt.show()
+print(" **   Logistic Distribution   ** ")
+x=np.random.logistic(1,2,10)
+print(x)
+x=np.random.logistic(1,2,10)
+print(x)
+plt.hist(x,100)
+plt.show()
